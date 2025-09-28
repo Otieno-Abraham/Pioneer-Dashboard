@@ -1,1 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abraham Otieno - Executive Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --info: #17a2b8;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px 0;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid white;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .profile-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .profile-info h1 {
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .profile-info p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .contact-info {
+            text-align: right;
+        }
+        
+        .contact-info p {
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .card-title {
+            font-size: 1.4rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: var(--secondary);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+        
+        .achievement-list {
+            list-style: none;
+        }
+        
+        .achievement-item {
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .achievement-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--success);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--secondary);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -23px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--secondary);
+        }
+        
+        .timeline-date {
+            font-weight: bold;
+            color: var(--secondary);
+            margin-bottom: 5px;
+        }
+        
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .skill-tag {
+            background: var(--light);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .chart-container {
+            height: 300px;
+            margin-top: 20px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            color: #7f8c8d;
+            border-top: 1px solid #eee;
+        }
+        
+        @media (max-width: 992px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            
+            .contact-info {
+                text-align: center;
+            }
+            
+            .contact-info p {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="profile">
+                    <div class="profile-img">
+                        <img src="Abu.jpg" alt="Abraham Otieno">
+                    </div>
+                    <div class="profile-info">
+                        <h1>Abraham Otieno</h1>
+                        <p>Executive Partner to the CEO at Pioneer Outsourcing BPO</p>
+                    </div>
+                </div>
+                <div class="contact-info">
+                    <p><i class="fas fa-globe"></i> Pioneer Outsourcing BPO</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Nairobi, Kenya</p>
+                    <p><i class="fas fa-envelope"></i> Contact via Pioneer BPO</p>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-value">6+</div>
+                <div class="stat-label">Key Areas of Expertise</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">15+</div>
+                <div class="stat-label">Major Achievements</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">100%</div>
+                <div class="stat-label">Project Success Rate</div>
+            </div>
+        </div>
+        
+        <div class="dashboard">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title"><span class="card-icon"><i class="fas fa-chess-king"></i></span> Strategic Leadership</h2>
+                </div>
+                <p>As the CEO's executive partner, Abraham drives decision-making, partnerships, and long-term business direction at Pioneer Outsourcing BPO.</p>
+                <ul class="achievement-list">
+                    <li class="achievement-item">
+                        <div class="achievement-icon"><i class="fas fa-check"></i></div>
+                        <div>Executive oversight of technology, client relations, and operational strategy</div>
+                    </li>
+                    <li class="achievement-item">
+                        <div class="achievement-icon"><i class="fas fa-check"></i></div>
+                        <div>Focus on innovation, scalability, and sustainability in all business operations</div>
+                    </li>
+                    <li class="achievement-item">
+                        <div class="achievement-icon"><i class="fas fa-check"></i></div>
+                        <div>Instrumental in positioning Pioneer as a credible outsourcing partner in Africa</div>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title"><span class="card-icon"><i class="fas fa-laptop-code"></i></span> Technology & Systems</h2>
+                </div>
+                <p>Spearheaded the creation and implementation of Pioneer's comprehensive technology infrastructure.</p>
+                <div class="skills">
+                    <div class="skill-tag"><i class="fas fa-database"></i> CRM Systems</div>
+                    <div class="skill-tag"><i class="fas fa-phone-alt"></i> VoIP</div>
+                    <div class="skill-tag"><i class="fas fa-users-cog"></i> Workforce Management</div>
+                    <div class="skill-tag"><i class="fas fa-graduation-cap"></i> Training Portal</div>
+                    <div class="skill-tag"><i class="fas fa-chart-line"></i> Performance Monitoring</div>
+                    <div class="skill-tag"><i class="fas fa-check-circle"></i> QA Systems</div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="techChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title"><span class="card-icon"><i class="fas fa-handshake"></i></span> Global Partnerships</h2>
+                </div>
+                <p>Central role in establishing and nurturing international partnerships and investor relations.</p>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">October 2024</div>
+                        <div class="timeline-content">CEO-level partnership talks with Paystack Kenya</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2024</div>
+                        <div class="timeline-content">Contract discussions with ForexAgents.ai</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">Ongoing</div>
+                        <div class="timeline-content">Executive communications with potential investors and fintech companies</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title"><span class="card-icon"><i class="fas fa-chart-line"></i></span> Branding & Growth</h2>
+                </div>
+                <p>Drove the development of Pioneer's corporate identity and digital presence.</p>
+                <ul class="achievement-list">
+                    <li class="achievement-item">
+                        <div class="achievement-icon"><i class="fas fa-check"></i></div>
+                        <div>Oversaw development of official corporate website</div>
+                    </li>
+                    <li class="achievement-item">
+                        <div class="achievement-icon"><i class="fas fa-check"></i></div>
+                        <div>Implemented SEO and branding strategy</div>
+                    </li>
+                    <li class="achievement-item">
+                        <div class="achievement-icon"><i class="fas fa-check"></i></div>
+                        <div>Established live chat and client engagement tools</div>
+                    </li>
+                    <li class="achievement-item">
+                        <div class="achievement-icon"><i class="fas fa-check"></i></div>
+                        <div>Increased visibility in fintech, Forex, e-commerce sectors</div>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="card full-width">
+                <div class="card-header">
+                    <h2 class="card-title"><span class="card-icon"><i class="fas fa-trophy"></i></span> Key Achievements</h2>
+                </div>
+                <div class="chart-container">
+                    <canvas id="achievementChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title"><span class="card-icon"><i class="fas fa-users"></i></span> Talent & Agent Welfare</h2>
+                </div>
+                <p>Designed comprehensive hiring processes and ongoing development programs.</p>
+                <ul class="achievement-list">
+                    <li class="achievement-item">
+                        <div class="achievement-icon"><i class="fas fa-check"></i></div>
+                        <div>High-quality recruitment for specialized roles</div>
+                    </li>
+                    <li class="achievement-item">
+                        <div class="achievement-icon"><i class="fas fa-check"></i></div>
+                        <div>Advocacy for agent welfare and fair practices</div>
+                    </li>
+                    <li class="achievement-item">
+                        <div class="achievement-icon"><i class="fas fa-check"></i></div>
+                        <div>Continuous training programs covering customer service, AI tools, and digital systems</div>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title"><span class="card-icon"><i class="fas fa-award"></i></span> Executive Milestones</h2>
+                </div>
+                <p>Significant contributions to Pioneer's foundational development and international positioning.</p>
+                <ul class="achievement-list">
+                    <li class="achievement-item">
+                        <div class="achievement-icon"><i class="fas fa-star"></i></div>
+                        <div>Positioned Pioneer as professional outsourcing firm with international standards</div>
+                    </li>
+                    <li class="achievement-item">
+                        <div class="achievement-icon"><i class="fas fa-star"></i></div>
+                        <div>Co-directed office setup at Purshottam Place, Nairobi</div>
+                    </li>
+                    <li class="achievement-item">
+                        <div class="achievement-icon"><i class="fas fa-star"></i></div>
+                        <div>Established contract management and compliance standards</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>Abraham Otieno - Executive Partner to the CEO at Pioneer Outsourcing BPO</p>
+            <p>Combining technical expertise, partnership leadership, and operational oversight for scalable international growth</p>
+        </div>
+    </footer>
 
+    <script>
+        // Technology Implementation Chart
+        const techCtx = document.getElementById('techChart').getContext('2d');
+        const techChart = new Chart(techCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['CRM Systems', 'VoIP', 'Workforce Mgmt', 'Training Portal', 'Performance Tools', 'QA Systems'],
+                datasets: [{
+                    data: [25, 20, 15, 15, 15, 10],
+                    backgroundColor: [
+                        '#3498db',
+                        '#2ecc71',
+                        '#e74c3c',
+                        '#f39c12',
+                        '#9b59b6',
+                        '#1abc9c'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Technology Implementation Focus'
+                    }
+                }
+            }
+        });
+        
+        // Achievement Timeline Chart
+        const achievementCtx = document.getElementById('achievementChart').getContext('2d');
+        const achievementChart = new Chart(achievementCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Strategic Leadership', 'Technology Systems', 'Global Partnerships', 'Branding & Growth', 'Talent Development', 'Executive Milestones'],
+                datasets: [{
+                    label: 'Achievement Level',
+                    data: [95, 90, 85, 88, 92, 87],
+                    backgroundColor: '#3498db',
+                    borderColor: '#2980b9',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Key Achievement Areas'
+                    },
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
