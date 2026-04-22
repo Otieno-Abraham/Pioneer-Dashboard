@@ -7,7 +7,7 @@
     <meta name="description" content="Executive Dashboard showcasing strategic leadership, partnerships, and operational achievements at Pioneer Outsourcing BPO.">
     <meta name="author" content="Abraham Otieno">
     
-    <!-- Lucide Icons (premium) -->
+    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <!-- Chart.js -->
@@ -52,7 +52,7 @@
             padding: 0 24px;
         }
 
-        /* Header & Navigation */
+        /* Simple Header with Logo Only (No Navigation) */
         header {
             background: white;
             position: fixed;
@@ -61,13 +61,7 @@
             z-index: 1000;
             border-bottom: 1px solid #e2e8f0;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        }
-
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 0;
+            padding: 12px 0;
         }
 
         .logo-with-photo {
@@ -103,32 +97,6 @@
             font-weight: 600;
         }
 
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 32px;
-        }
-
-        .nav-links a {
-            color: #1a202c;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: var(--transition);
-        }
-
-        .nav-links a:hover {
-            color: var(--accent);
-        }
-
-        .mobile-menu {
-            display: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            background: none;
-            border: none;
-        }
-
         /* Global location strip */
         .global-strip {
             background: var(--primary-light);
@@ -138,7 +106,7 @@
             font-weight: 500;
             color: var(--primary);
             border-bottom: 1px solid #e2e8f0;
-            margin-top: 76px;
+            margin-top: 70px;
         }
 
         .flag-icon {
@@ -519,7 +487,7 @@
             text-decoration: none;
             font-weight: 600;
             font-size: 0.85rem;
-            margin-bottom: 20px;
+            margin: 20px 0;
             transition: var(--transition);
         }
 
@@ -584,11 +552,7 @@
         /* Responsive */
         @media (max-width: 768px) {
             .container { padding: 0 20px; }
-            .navbar { flex-direction: column; align-items: flex-start; }
-            .nav-links { display: none; flex-direction: column; width: 100%; margin-top: 15px; }
-            .nav-links.active { display: flex; }
-            .mobile-menu { display: block; position: absolute; top: 20px; right: 20px; }
-            .global-strip { margin-top: 100px; }
+            .global-strip { margin-top: 85px; }
             .hero-content { flex-direction: column; text-align: center; }
             .profile-section { flex-direction: column; text-align: center; }
             .contact-info p { justify-content: center; }
@@ -598,26 +562,16 @@
     </style>
 </head>
 <body>
+    <!-- Simple Header with Logo Only - No Navigation -->
     <header>
         <div class="container">
-            <nav class="navbar">
-                <a href="/" class="logo-with-photo">
-                    <div class="nav-avatar"><img src="abu.jpg" alt="Abraham Otieno"></div>
-                    <div>
-                        <div class="logo-name">Abraham Otieno</div>
-                        <div class="logo-title">Strategic Executive Partner</div>
-                    </div>
-                </a>
-                <ul class="nav-links">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/services">Services</a></li>
-                    <li><a href="/portfolio">Portfolio</a></li>
-                    <li><a href="/case-studies">Case Studies</a></li>
-                    <li><a href="/booking">Book a Call</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-                <button class="mobile-menu"><i class="fas fa-bars"></i></button>
-            </nav>
+            <a href="https://abrahamotieno.com/portfolio" class="logo-with-photo" style="text-decoration: none;">
+                <div class="nav-avatar"><img src="abu.jpg" alt="Abraham Otieno"></div>
+                <div>
+                    <div class="logo-name">Abraham Otieno</div>
+                    <div class="logo-title">Strategic Executive Partner</div>
+                </div>
+            </a>
         </div>
     </header>
 
@@ -651,7 +605,7 @@
     </div>
 
     <div class="container">
-        <!-- FIXED: Correct absolute URL for Back to Portfolio button -->
+        <!-- Back to Portfolio Button -->
         <a href="https://abrahamotieno.com/portfolio" class="back-btn">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> 
             Back to Portfolio
@@ -885,22 +839,6 @@
                 scales: { y: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%' } } },
                 plugins: { legend: { display: false }, title: { display: true, text: 'Key Achievement Areas', font: { size: 14, weight: 'bold' }, padding: 15 } }
             }
-        });
-
-        // Mobile menu toggle
-        const mobileBtn = document.querySelector('.mobile-menu');
-        const navLinks = document.querySelector('.nav-links');
-        if (mobileBtn) {
-            mobileBtn.addEventListener('click', () => {
-                navLinks.classList.toggle('active');
-                mobileBtn.innerHTML = navLinks.classList.contains('active') ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
-            });
-        }
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                if (mobileBtn) mobileBtn.innerHTML = '<i class="fas fa-bars"></i>';
-            });
         });
     </script>
 </body>
